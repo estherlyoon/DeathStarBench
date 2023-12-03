@@ -1,4 +1,5 @@
 global: 
+  dockerUser: ""
   replicas: 1
   imagePullPolicy: "IfNotPresent"
   restartPolicy: Always

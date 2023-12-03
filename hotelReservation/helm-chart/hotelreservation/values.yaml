@@ -1,7 +1,5 @@
 global:
-  # TODO make this configured from env var
-    # --set env.DOCKER_USER=$DOCKER_USER
-  dockerUser: estherlyoon
+  dockerUser: ""
   nameOverride: ""
   fullnameOverride: ""
   mainChart: hotelres

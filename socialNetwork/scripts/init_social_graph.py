@@ -141,9 +141,9 @@ if __name__ == '__main__':
   parser.add_argument('--limit', type=int, help='total number simultaneous connections', default=200)
   args = parser.parse_args()
 
-  with open(os.path.join('datasets/social-graph', args.graph, f'{args.graph}.nodes'), 'r') as f:
+  with open(os.path.join('/root/DeathStarBench/socialNetwork/datasets/social-graph', args.graph, f'{args.graph}.nodes'), 'r') as f:
     nodes = getNumNodes(f)
-  with open(os.path.join('datasets/social-graph', args.graph, f'{args.graph}.edges'), 'r') as f:
+  with open(os.path.join('/root/DeathStarBench/socialNetwork/datasets/social-graph', args.graph, f'{args.graph}.edges'), 'r') as f:
     edges = getEdges(f)
 
   random.seed(1)   # deterministic random numbers
