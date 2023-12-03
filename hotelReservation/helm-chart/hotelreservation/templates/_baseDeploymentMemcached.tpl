@@ -35,8 +35,32 @@ spec:
         {{ tpl $.Values.global.annotations . | nindent 8 | trim }}
       {{- end }}
     spec:
-      containers:
       {{- with .Values.container }}
+      initContainers:
+      - name: init-iptables
+        image: {{ $.Values.global.dockerUser }}/init-iptables:latest
+        imagePullPolicy: {{ .imagePullPolicy | default $.Values.global.imagePullPolicy }}
+        securityContext:
+          capabilities:
+            add:
+              - NET_ADMIN  
+          privileged: true
+        env:
+        {{ range $cport := .ports }}
+        - name: SERVICE_PORT
+          value: "{{ $cport.containerPort }}"
+        {{ end }}
+      containers:
+      - name: sidecar
+        image: {{ $.Values.global.dockerUser }}/sidecar:latest
+        imagePullPolicy: {{ .imagePullPolicy | default $.Values.global.imagePullPolicy }}
+        ports:
+        - containerPort: 8000
+        env:
+        {{ range $cport := .ports }}
+        - name: SERVICE_PORT
+          value: "{{ $cport.containerPort }}"
+        {{ end }}     
       - name: "{{ .name }}"
         image: {{ .dockerRegistry | default $.Values.global.dockerRegistry }}/{{ .image }}:{{ .imageVersion | default $.Values.global.defaultImageVersion }}
         imagePullPolicy: {{ .imagePullPolicy | default $.Values.global.imagePullPolicy }}
